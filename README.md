@@ -37,13 +37,14 @@ This is a starter template for Next.js projects with built-in authentication, Ra
    ```bash
    docker-compose up -d
    ```
+5. Make .env file same as example env file, if usind docker for database kepp the DATABASE_URL same as example
 
-5. Run Prisma migrations:
+6. Run Prisma migrations:
    ```bash
    npx prisma migrate dev
    ```
 
-6. Start the development server:
+7. Start the development server:
    ```bash
    npm run dev
    ```
