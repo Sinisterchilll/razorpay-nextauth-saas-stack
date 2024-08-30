@@ -48,13 +48,6 @@ This is a starter template for Next.js projects with built-in authentication, Ra
    npm run dev
    ```
 
-## Configuration
-
-[Add details about configuring NextAuth, Razorpay, etc.]
-
-## Deployment
-
-[Add deployment instructions or link to deployment documentation]
 
 ## License
 
