@@ -1,4 +1,4 @@
-# Next.js Starter with Auth, Razorpay, Prisma, and PostgreSQL
+# SaaS Starter with Nextauth, Razorpay, Prisma, and PostgreSQL
 
 This is a starter template for Next.js projects with built-in authentication, Razorpay integration, Prisma ORM, and PostgreSQL (via Docker).
 
