@@ -13,6 +13,7 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import Script from "next/script";
 import { LoaderCircle } from "lucide-react";
+import   { Suspense } from "react"; 
 
 export default function Checkout() {
   const router = useRouter();
@@ -112,30 +113,32 @@ export default function Checkout() {
         src="https://checkout.razorpay.com/v1/checkout.js"
       />
 
-      <section className="container h-screen flex flex-col justify-center items-center gap-10">
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight">
-          Checkout
-        </h1>
-        <Card className="max-w-[25rem] space-y-8">
-          <CardHeader>
-            <CardTitle className="my-4">Continue</CardTitle>
-            <CardDescription>
-              By clicking on pay you&apos;ll purchase your plan subscription of Rs{" "}
-              {amount}/month
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={processPayment}>
-              <Button className="w-full" type="submit">{loading?"...loading":"Pay"}</Button>
-            </form>
-          </CardContent>
-          <CardFooter className="flex">
-            <p className="text-sm text-muted-foreground underline underline-offset-4">
-              Please read the terms and conditions.
-            </p>
-          </CardFooter>
-        </Card>
-      </section>
+      <Suspense fallback={<div>Loading...</div>}> {/* Add Suspense boundary */}
+        <section className="container h-screen flex flex-col justify-center items-center gap-10">
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight">
+            Checkout
+          </h1>
+          <Card className="max-w-[25rem] space-y-8">
+            <CardHeader>
+              <CardTitle className="my-4">Continue</CardTitle>
+              <CardDescription>
+                By clicking on pay you&apos;ll purchase your plan subscription of Rs{" "}
+                {amount}/month
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={processPayment}>
+                <Button className="w-full" type="submit">{loading?"...loading":"Pay"}</Button>
+              </form>
+            </CardContent>
+            <CardFooter className="flex">
+              <p className="text-sm text-muted-foreground underline underline-offset-4">
+                Please read the terms and conditions.
+              </p>
+            </CardFooter>
+          </Card>
+        </section>
+      </Suspense> {/* End of Suspense boundary */}
     </>
   );
 }
