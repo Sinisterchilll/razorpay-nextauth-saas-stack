@@ -1,6 +1,4 @@
-
-"use client";
-
+"use client"
 import {
   Card,
   CardContent,
@@ -11,8 +9,24 @@ import {
 } from "@/components/ui/card";
 import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { Appbar } from "../components/Appbar";
+import axios from "axios";
+
+
+
+const buyProduct1 = async () => {
+  
+  try {
+    const response = await axios.post("/api/order", {
+      productId: "525375",
+    });
+
+    window.open(response.data.checkoutUrl, "_blank");
+  } catch (error) {
+    console.error(error);
+    alert("Failed to buy product #1");
+  }
+};
 
 type PricingCardProps = {
   title: string;
@@ -22,32 +36,32 @@ type PricingCardProps = {
   actionLabel: string;
 };
 
-const PricingCard = ({title,price,description, features, actionLabel}:PricingCardProps) => (
-
-  <Card className="max-w-80 space-y-6">
-    <CardHeader className="pb-8 pt-4 gap-8">
-      <CardTitle className="">
-        {title}
-      </CardTitle>
-      <h3 className="text-3xl font-bold my-6">
-       Rs {price}
-      </h3>
-    </CardHeader>
-    <CardContent className="flex flex-col gap-2">
-      <CardDescription className="pt-1.5 h-12">{description}</CardDescription>
-      {features.map((f,i)=>{ 
-        return <span key={i} className="flex justify-center items-center gap-4 text-sm text-muted-foreground"><CheckCircle2 className="text-green-500 h-4 w-4" />{f}</span>
-      })}
-    </CardContent>
-    <CardFooter className="mt-2">
-      <Button className="w-full" asChild>
-        <Link href={`/checkout/?amount=${price}`}>
-        {actionLabel}
-        </Link>
-      </Button>
-    </CardFooter>
-  </Card>
-);
+const PricingCard = ({title,price,description, features, actionLabel}:PricingCardProps) => {
+  console.log("Rendering PricingCard:", title); // Debugging line
+  return (
+    <Card className="max-w-80 space-y-6">
+      <CardHeader className="pb-8 pt-4 gap-8">
+        <CardTitle className="">
+          {title}
+        </CardTitle>
+        <h3 className="text-3xl font-bold my-6">
+         Rs {price}
+        </h3>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-2">
+        <CardDescription className="pt-1.5 h-12">{description}</CardDescription>
+        {features.map((f,i)=>{ 
+          return <span key={i} className="flex justify-center items-center gap-4 text-sm text-muted-foreground"><CheckCircle2 className="text-green-500 h-4 w-4" />{f}</span>
+        })}
+      </CardContent>
+      <CardFooter className="mt-2">
+        <Button className="w-full " onClick={buyProduct1}>
+          {actionLabel}
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};
 
 export default function Page() {
   const plans = [

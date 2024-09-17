@@ -1,24 +1,48 @@
-import Razorpay from 'razorpay';
+import { lemonSqueezyApiInstance } from "@/lib/lemonsqueezy";
 
-const razorpay = new Razorpay({
-	key_id: process.env.key_id!,
-	key_secret: process.env.key_secret,
-});
+export const dynamic = "force-dynamic";
 
-import { NextRequest, NextResponse } from 'next/server';
+export async function POST(req: Request) {
+  try {
+    const reqData = await req.json();
 
-export async function POST(request: NextRequest) {
-	const { amount, currency } = (await request.json()) as {
-		amount: string;
-		currency: string;
-	};
+    if (!reqData.productId)
+      return Response.json(
+        { message: "productId is required" },
+        { status: 400 }
+      );
 
-	var options = {
-		amount: amount,
-		currency: currency,
-		receipt: 'rcp1',
-	};
-	const order = await razorpay.orders.create(options);
-	console.log(order);
-	return NextResponse.json({ orderId: order.id }, { status: 200 });
+    const response = await lemonSqueezyApiInstance.post("/checkouts", {
+      data: {
+        type: "checkouts",
+        attributes: {
+          checkout_data: {
+            custom: {
+              user_id: "123",
+            },
+          },
+        },
+        relationships: {
+          store: {
+            data: {
+              type: "stores",
+              id: process.env.LEMON_SQUEEZY_STORE_ID || "",
+            },
+          },
+          variant: {
+            data: {
+              type: "variants",
+              id: reqData.productId.toString(),
+            },
+          },
+        },
+      },
+    });
+
+    const checkoutUrl = response.data.data.attributes.url;
+
+    return Response.json({ checkoutUrl });
+  } catch (error) {
+    return Response.json({ message: "An error occured" }, { status: 500 });
+  }
 }

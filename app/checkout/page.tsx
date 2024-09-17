@@ -1,7 +1,8 @@
+// This page does not do anything in lemonsqueezy, so you can delte it if you want.
+
 "use client";
 import * as React from "react";
 import { Suspense } from "react";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
